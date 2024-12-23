@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strong Password Generator</title>
+  <style>
+    body {
+      
+      background-color: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
+
+/* Container for the buttons */
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Styling for the button */
+.button {
+  text-decoration: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  text-align: center;
+  display: inline-block;
+}
+
+/* Hover Effect */
+.button:hover {
+  background-color: #45a049;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
+    .tool-container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .password {
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .suggestions {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .suggestions p {
+      background: #eaf4ff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .suggestions p:hover {
+      background: #d2e8ff;
+    }
+
+    .custom-password {
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .custom-password input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .custom-password .btn {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+    <center>
+  <div class="tool-container">
+    
+    <h1>Strong Password Generator</h1>
+    <div id="password" class="password">Click Generate</div>
+    <button class="btn" onclick="generatePassword()">Generate Password</button>
+
+    <div class="custom-password">
+      <h2>Create Your Own Password:</h2>
+      <input type="text" id="customPasswordInput" placeholder="Enter your password" />
+      <button class="btn" onclick="setCustomPassword()">Use This Password</button>
+    </div>
+
+    <div class="suggestions">
+      <h2>Suggestions:</h2>
+      <div id="suggestions"></div>
+    </div>
+  </div>
+</center>
+<div class="button-container">
+    <a href="https://pancardresizertool.blogspot.com/" class="button">Pan Card Resize Tool</a>
+    <a href="https://strongpasswordgeneratorrr.blogspot.com/" class="button">stong password generator</a>
+  </div>
+
+  <script>
+    function generatePassword() {
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?";
+      const length = 16;
+      let password = "";
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+
+      document.getElementById("password").innerText = password;
+      suggestPasswords(password);
+    }
+
+    function setCustomPassword() {
+      const customPassword = document.getElementById("customPasswordInput").value;
+      if (customPassword.length < 8) {
+        alert("Your password should be at least 8 characters long.");
+        return;
+      }
+      document.getElementById("password").innerText = customPassword;
+      suggestPasswords(customPassword);
+    }
+
+    function suggestPasswords(currentPassword) {
+      const suggestionsContainer = document.getElementById("suggestions");
+      suggestionsContainer.innerHTML = "";
+
+      for (let i = 0; i < 3; i++) {
+        const suggestion = generateSimilarPassword();
+        const suggestionElement = document.createElement("p");
+        suggestionElement.innerText = suggestion;
+        suggestionElement.onclick = () => {
+          document.getElementById("password").innerText = suggestion;
+        };
+        suggestionsContainer.appendChild(suggestionElement);
+      }
+    }
+
+    function generateSimilarPassword() {
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?";
+      const length = 16;
+      let password = "";
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+
+      return password;
+    }
+  </script>
+</body>
+</html>
